@@ -77,6 +77,37 @@ func (c *Converter) ValueOf(v float64, unit, _type uint8) (float64, error) {
 	return res[0].Float(), nil
 }
 
+func (c *Converter) GetArea(v float64, unit, percision uint8) (float64, error) {
+	v, err := c.ValueOf(v, unit, TYPE_SQUARE)
+	if err != nil {
+		return v, err
+	}
+
+	return get_area(v, percision)
+}
+
+func (c *Converter) GetVolume(v float64, unit, percision uint8) (float64, error) {
+	v, err := c.ValueOf(v, unit, TYPE_CUBE)
+	if err != nil {
+		return v, err
+	}
+
+	return get_volume(v, percision)
+}
+
+func (c *Converter) GetDirect(v float64, unit, percision uint8) (float64, error) {
+	v, err := c.ValueOf(v, unit, TYPE_DIRECT)
+	if err != nil {
+		return v, err
+	}
+
+	return v, nil
+}
+
+func (c *Converter) GetBBox(length, width, height float64, percision uint8) (*BoundsBox, error) {
+	return get_bbox(length, width, height, percision)
+}
+
 func init() {
 	m := map[uint8]Handler{
 		UNIT_CM:   unit_cm,

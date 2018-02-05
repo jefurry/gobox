@@ -163,42 +163,32 @@ func (box *Box) SetTriangleCount(triangle_count int32) {
 // 表面积
 // 单位默认为毫米
 func (box *Box) GetArea(unit, percision uint8) (float64, error) {
-	v, err := box.ct.ValueOf(math.Abs(box.total_area), unit, TYPE_SQUARE)
-	if err != nil {
-		return v, err
-	}
-
-	return get_area(v, percision)
+	return box.ct.GetArea(math.Abs(box.total_area), unit, percision)
 }
 
 // 体积
 // 单位默认为毫米
 func (box *Box) GetVolume(unit, percision uint8) (float64, error) {
-	v, err := box.ct.ValueOf(math.Abs(box.total_volume), unit, TYPE_CUBE)
-	if err != nil {
-		return v, err
-	}
-
-	return get_volume(v, percision)
+	return box.ct.GetVolume(math.Abs(box.total_area), unit, percision)
 }
 
 // 长宽高
 // 单位默认为毫米
 func (box *Box) GetBoundsBox(unit, percision uint8) (*BoundsBox, error) {
-	length, err := box.ct.ValueOf(math.Abs(box.max_x-box.min_x), unit, TYPE_DIRECT)
+	length, err := box.ct.GetDirect(math.Abs(box.max_x-box.min_x), unit, TYPE_DIRECT)
 	if err != nil {
 		return nil, err
 	}
-	width, err := box.ct.ValueOf(math.Abs(box.max_y-box.min_y), unit, TYPE_DIRECT)
+	width, err := box.ct.GetDirect(math.Abs(box.max_y-box.min_y), unit, TYPE_DIRECT)
 	if err != nil {
 		return nil, err
 	}
-	height, err := box.ct.ValueOf(math.Abs(box.max_z-box.min_z), unit, TYPE_DIRECT)
+	height, err := box.ct.GetDirect(math.Abs(box.max_z-box.min_z), unit, TYPE_DIRECT)
 	if err != nil {
 		return nil, err
 	}
 
-	return get_bbox(length, width, height, percision)
+	return box.ct.GetBBox(length, width, height, percision)
 }
 
 func (box *Box) GetMinX() float64 {
